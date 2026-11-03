@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DCT Custom TradingView Chart</title>
+  <title>DCT Custom XAUUSD Chart</title>
+
+  <script src="https://unpkg.com/lightweight-charts@5.0.8/dist/lightweight-charts.standalone.production.js"></script>
 
   <style>
     * {
@@ -17,31 +19,23 @@
       width: 100%;
       height: 100%;
       background: #FFFFFF;
-      overflow: hidden;
+      font-family: Arial, sans-serif;
     }
 
-    .tradingview-widget-container {
+    #chart {
       width: 100%;
-      height: 100%;
-      background: #FFFFFF;
+      height: calc(100vh - 32px);
     }
 
-    .tradingview-widget-container__widget {
-      width: 100%;
-      height: calc(100% - 32px);
-    }
-
-    .tradingview-widget-copyright {
+    .attribution {
       height: 32px;
       display: flex;
-      align-items: center;
       justify-content: center;
-      font-family: Arial, sans-serif;
+      align-items: center;
       font-size: 11px;
-      background: #FFFFFF;
     }
 
-    .tradingview-widget-copyright a {
+    .attribution a {
       color: #2962FF;
       text-decoration: none;
     }
@@ -50,52 +44,62 @@
 
 <body>
 
-  <div class="tradingview-widget-container">
+  <div id="chart"></div>
 
-    <div class="tradingview-widget-container__widget"></div>
-
-    <div class="tradingview-widget-copyright">
-      <a
-        href="https://www.tradingview.com/"
-        target="_blank"
-        rel="noopener nofollow"
-      >
-        Track all markets on TradingView
-      </a>
-    </div>
-
-    <script
-      type="text/javascript"
-      src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js"
-      async
-    >
-    {
-      "allow_symbol_change": true,
-      "calendar": false,
-      "details": true,
-      "hide_side_toolbar": false,
-      "hide_top_toolbar": false,
-      "hide_legend": false,
-      "hide_volume": false,
-      "hotlist": false,
-      "interval": "15",
-      "locale": "en",
-      "save_image": true,
-      "style": "1",
-      "symbol": "OANDA:XAUUSD",
-      "theme": "light",
-      "timezone": "Asia/Kuala_Lumpur",
-      "backgroundColor": "#FFFFFF",
-      "gridColor": "rgba(0, 0, 0, 0.06)",
-      "watchlist": [],
-      "withdateranges": true,
-      "compareSymbols": [],
-      "studies": [],
-      "autosize": true
-    }
-    </script>
-
+  <div class="attribution">
+    <a href="https://www.tradingview.com/" target="_blank">
+      Charting by TradingView
+    </a>
   </div>
+
+  <script>
+    const chartElement = document.getElementById('chart');
+
+    const chart = LightweightCharts.createChart(chartElement, {
+      autoSize: true,
+
+      layout: {
+        background: { color: '#FFFFFF' },
+        textColor: '#000000'
+      },
+
+      grid: {
+        vertLines: { color: '#EEEEEE' },
+        horzLines: { color: '#EEEEEE' }
+      },
+
+      rightPriceScale: {
+        borderColor: '#000000'
+      },
+
+      timeScale: {
+        borderColor: '#000000',
+        timeVisible: true
+      }
+    });
+
+    const candles = chart.addSeries(
+      LightweightCharts.CandlestickSeries,
+      {
+        upColor: '#FFFFFF',
+        downColor: '#000000',
+        borderUpColor: '#000000',
+        borderDownColor: '#000000',
+        wickUpColor: '#000000',
+        wickDownColor: '#000000'
+      }
+    );
+
+    // Real XAUUSD market data will be connected here.
+    // Do not insert sample prices.
+
+    const status = document.createElement('div');
+    status.textContent = 'Waiting for XAUUSD market data connection';
+    status.style.cssText =
+      'position:absolute;top:12px;left:12px;color:#666;font-size:12px;';
+    document.body.appendChild(status);
+
+  </script>
 
 </body>
 </html>
